@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="dejankify",
-    version="0.0.1",
+    version="0.0.3",
     author="Josh Wren",
     author_email="joshisplutar@gmail.com",
     description="A tool to help you find and remove unused imports in your python project.",
@@ -45,4 +45,9 @@ setup(
         "iniconfig",
         "attrs"
     ],
+    entry_points={
+        "console_scripts": [
+            "dejankify=dejankify.dependency_cleanup:parse_and_start",
+        ],
+    },
 )
