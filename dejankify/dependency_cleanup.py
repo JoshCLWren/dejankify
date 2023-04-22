@@ -71,7 +71,7 @@ def scan_and_fix(args, file=None):
     Main function.
     """
 
-    startup_log = "Starting dependency_cleanup..."
+    startup_log = "Dejankifying your jank..."
     if args:
         global verbose_output
         verbose_output = verbose_output = not args.silent
@@ -82,7 +82,7 @@ def scan_and_fix(args, file=None):
         verbose_output = True
     custom_print(startup_log)
     install_pip(args)
-    requirements = Requirements(default=True)
+    requirements = Requirements()
     requirements.check_env_packages(args)
     requirements.uninstall_non_default_packages(args)
     requirements.install(args, scan_project=True)
@@ -106,47 +106,38 @@ class Requirements:
     Handles the base requirements for the project.
     """
 
-    base_requirements = (
-        "pip",
-        "setuptools",
-        "wheel",
-        "pdbpp",
-        "black",
-        "flake8",
-        "isort",
-        "pylint",
-        "pydocstyle",
-        "mypy",
-        "fancycompleter",
-        "click",
-        "typing-extensions",
-        "astroid",
-        "dill",
-        "mccabe",
-        "tomlkit",
-        "pytest",
-        "argparse",
-        "pluggy",
-        "iniconfig",
-        "attrs"
-    )
-    txt_requirements = []
-    requirements_installed = []
-    temp_requirements_file = None
-    packages_to_install = []
-    backup_requirements = None
-    packages_to_remove = []
-
-    def __init__(self, default, project_path=None):
-        self.PROJECT_PATH = project_path or os.getcwd()
-        if not default:
-            self.base_requirements = []
-        else:
-            user_base_requirements = input(
-                "Do you wish to use the standard base requirements? (y/n): "
-            )
-            if user_base_requirements != "y":
-                self.base_requirements = None
+    def __init__(self):
+        self.base_requirements = (
+            "pip",
+            "setuptools",
+            "wheel",
+            "pdbpp",
+            "black",
+            "flake8",
+            "isort",
+            "pylint",
+            "pydocstyle",
+            "mypy",
+            "fancycompleter",
+            "click",
+            "typing-extensions",
+            "astroid",
+            "dill",
+            "mccabe",
+            "tomlkit",
+            "pytest",
+            "argparse",
+            "pluggy",
+            "iniconfig",
+            "attrs",
+            "dejankify", # This is the package itself. Don't remove it.
+        )
+        self.txt_requirements = []
+        self.requirements_installed = []
+        self.temp_requirements_file = None
+        self.packages_to_install = []
+        self.backup_requirements = None
+        self.packages_to_remove = []
 
     def remove_unused_requirements(self, args):
         """
@@ -950,19 +941,12 @@ def parse_and_start():
     parser = argparse.ArgumentParser(
         description="Clean up unused imports in a Python project."
     )
-    parser.add_argument(
-        "project_path",
-        metavar="path",
-        type=str,
-        nargs="?",
-        default=os.getcwd(),
-        help="Path to the root of the project (default: current directory)",
-    )
+
     parser.add_argument(
         "-v",
         "--version",
         action="version",
-        version="%(prog)s 0.1.0",
+        version="%(prog)s 0.0.6",
         help="Show the version number and exit",
     )
     parser.add_argument(
