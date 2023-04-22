@@ -15,8 +15,7 @@ import sys
 import time
 import xmlrpc.client
 from typing import List, Tuple
-
-import stdlib_check
+from .stdlib_check import ScanBuiltins
 
 verbose_output = False
 
@@ -295,8 +294,11 @@ class Requirements:
         Creates a temporary requirements file and installs the packages from it.
         Does not install packages that are already installed.
         """
+        # this is being installed as a pip package so we need to make the path
+        # to the requirements file absolute and for the project's root directory
+
         self.temp_requirements_file = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "temp_requirements.txt"
+            self.PROJECT_PATH, "tmp_requirements", "requirements.txt"
         )
         with open(self.temp_requirements_file, "w") as f:
             for package in self.packages_to_install:
@@ -437,7 +439,7 @@ class Project:
         :return:
         """
         # find any imports that are not external packages requiring installation by pip
-        self.skipped_libraries = stdlib_check.Builtins().get()
+        self.skipped_libraries = ScanBuiltins().get()
         self.import_blocks = self.filter_unique_tokens(self.import_blocks)
         # filter out any imports that may be importing a project file or module
         self.projects_modules = self.inspect_project_level_imports()

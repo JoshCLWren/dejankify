@@ -20,7 +20,7 @@ def filter_out_site_packages(packages: list = None):
     return [module for module in packages if not (site_packages / module).exists()]
 
 
-class Builtins:
+class ScanBuiltins:
     """
     A class for checking if a module is a builtin module.
     """
