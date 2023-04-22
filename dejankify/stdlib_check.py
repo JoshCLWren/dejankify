@@ -28,6 +28,8 @@ class ScanBuiltins:
     def __init__(self, cache_override=True):
         # check if the last time the cache was updated, if it's been more than 5 minutes, update it
         cache_path = "cache/builtins.json"
+
+
         if os.path.exists(cache_path):
             # find the age of the cache file
             cache_age = time.time() - os.path.getmtime(cache_path)

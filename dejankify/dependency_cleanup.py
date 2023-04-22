@@ -257,6 +257,10 @@ class Requirements:
     def freeze_requirements(self, requirements_set=None):
         if requirements_set is None:
             requirements_set = []
+        # ensure that the json file exists
+        if not os.path.exists("invalid_requirements.json"):
+            with open("invalid_requirements.json", "w") as f:
+                f.write("{}")
         with open("invalid_requirements.json", "r") as f:
             invalid_requirements = json.load(f)
 
@@ -550,6 +554,9 @@ class Project:
         invalid_requirements = []
         validated_cache_file = "validated_requirements.json"
         invalid_requirements_file = "invalid_requirements.json"
+        if not os.path.exists(validated_cache_file):
+            with open(validated_cache_file, "w") as file:
+                json.dump([], file)
         if os.path.exists(validated_cache_file):
             with open(validated_cache_file, "r") as file:
                 try:
@@ -948,7 +955,7 @@ def parse_and_start():
         "-v",
         "--version",
         action="version",
-        version="%(prog)s 0.0.9",
+        version="%(prog)s 0.1.0",
         help="Show the version number and exit",
     )
     parser.add_argument(
