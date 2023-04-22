@@ -291,7 +291,7 @@ class Requirements:
         # to the requirements file absolute and for the project's root directory
 
         self.temp_requirements_file = os.path.join(
-            self.PROJECT_PATH, "tmp_requirements", "requirements.txt"
+            self.PROJECT_PATH, "temp_requirements.txt"
         )
         with open(self.temp_requirements_file, "w") as f:
             for package in self.packages_to_install:
@@ -948,7 +948,7 @@ def parse_and_start():
         "-v",
         "--version",
         action="version",
-        version="%(prog)s 0.0.7",
+        version="%(prog)s 0.0.9",
         help="Show the version number and exit",
     )
     parser.add_argument(
