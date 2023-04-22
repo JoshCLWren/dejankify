@@ -108,7 +108,7 @@ class Requirements:
     """
 
     def __init__(self, project_path):
-        self.project_path = project_path
+        self.PROJECT_PATH = project_path
         self.base_requirements = (
             "pip",
             "setuptools",
