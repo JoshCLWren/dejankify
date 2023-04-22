@@ -71,7 +71,7 @@ def scan_and_fix(args, file=None):
     Main function.
     """
 
-    startup_log = "Dejankifying your jank..."
+    startup_log = "Dejankifying your code..."
     if args:
         global verbose_output
         verbose_output = verbose_output = not args.silent
@@ -82,11 +82,12 @@ def scan_and_fix(args, file=None):
         verbose_output = True
     custom_print(startup_log)
     install_pip(args)
-    requirements = Requirements()
+    project_path = os.getcwd()
+    requirements = Requirements(project_path)
     requirements.check_env_packages(args)
     requirements.uninstall_non_default_packages(args)
     requirements.install(args, scan_project=True)
-    project_path = args.project_path or os.getcwd()
+
     project = Project(project_path=project_path, file=file)
     requirements.remove_unused_requirements(args)
     project.get_python_files()
@@ -106,7 +107,8 @@ class Requirements:
     Handles the base requirements for the project.
     """
 
-    def __init__(self):
+    def __init__(self, project_path):
+        self.project_path = project_path
         self.base_requirements = (
             "pip",
             "setuptools",
@@ -351,7 +353,7 @@ class Project:
     Project level attributes and methods.
     """
 
-    def __init__(self, project_path=None, silent=False, file=None):
+    def __init__(self, project_path=None, file=None):
         self.PROJECT_PATH = project_path or os.path.dirname(os.path.abspath(__file__))
         custom_print(self.PROJECT_PATH)
         # start by installing the requirements
@@ -946,7 +948,7 @@ def parse_and_start():
         "-v",
         "--version",
         action="version",
-        version="%(prog)s 0.0.6",
+        version="%(prog)s 0.0.7",
         help="Show the version number and exit",
     )
     parser.add_argument(
