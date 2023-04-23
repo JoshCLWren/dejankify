@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="dejankify",
-    version="0.1.01",
+    version="0.1.1",
     author="Josh Wren",
     author_email="joshisplutar@gmail.com",
     description="A tool to help you find and remove unused imports in your python project.",
