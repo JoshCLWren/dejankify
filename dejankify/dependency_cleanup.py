@@ -260,7 +260,7 @@ class Requirements:
         # ensure that the json file exists
         if not os.path.exists("invalid_requirements.json"):
             with open("invalid_requirements.json", "w") as f:
-                f.write("{}")
+                f.write("[]")
         with open("invalid_requirements.json", "r") as f:
             invalid_requirements = json.load(f)
 
@@ -955,7 +955,7 @@ def parse_and_start():
         "-v",
         "--version",
         action="version",
-        version="%(prog)s 0.1.0",
+        version="%(prog)s 0.1.01",
         help="Show the version number and exit",
     )
     parser.add_argument(
